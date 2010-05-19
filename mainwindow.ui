@@ -1,24 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow" >
-  <property name="geometry" >
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>400</height>
+    <width>320</width>
+    <height>184</height>
    </rect>
   </property>
-  <property name="windowTitle" >
-   <string>MainWindow</string>
+  <property name="windowTitle">
+   <string>Курсовая работа по ТПР. Новиков Андрей, 753.</string>
   </property>
-  <widget class="QMenuBar" name="menuBar" />
-  <widget class="QToolBar" name="mainToolBar" />
-  <widget class="QWidget" name="centralWidget" />
-  <widget class="QStatusBar" name="statusBar" />
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="1">
+     <widget class="QSpinBox" name="logsCount">
+      <property name="specialValueText">
+       <string>штук</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="logsCountLabel">
+      <property name="text">
+       <string>Всего брёвен</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLabel" name="logLengthLabel">
+      <property name="text">
+       <string>длиной</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QSpinBox" name="logLength">
+      <property name="specialValueText">
+       <string>метров</string>
+      </property>
+      <property name="suffix">
+       <string> м</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="firstLogLengthLabel">
+      <property name="text">
+       <string>Первый брусок</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QSpinBox" name="firstLogLength">
+      <property name="specialValueText">
+       <string>метров</string>
+      </property>
+      <property name="suffix">
+       <string> м</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QLabel" name="secondLogLengthLabel">
+      <property name="text">
+       <string>и второй</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="3">
+     <widget class="QSpinBox" name="secondLogLength">
+      <property name="specialValueText">
+       <string>метров</string>
+      </property>
+      <property name="suffix">
+       <string> м</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="2" colspan="2">
+     <widget class="QPushButton" name="solveButton">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Решить</string>
+      </property>
+      <property name="autoDefault">
+       <bool>true</bool>
+      </property>
+      <property name="default">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0" colspan="2">
+     <widget class="QCheckBox" name="showSolutionCheckBox">
+      <property name="text">
+       <string>Показывать решение</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0" colspan="4">
+     <widget class="QLabel" name="solutionLabel">
+      <property name="text">
+       <string>Пожалуйста, введите исходные значения…</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>320</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuTask">
+    <property name="title">
+     <string>За&amp;дача</string>
+    </property>
+    <addaction name="actionSolve"/>
+    <addaction name="actionDefaultValues"/>
+    <addaction name="separator"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>&amp;Помощь</string>
+    </property>
+    <addaction name="actionHelp"/>
+    <addaction name="actionTask"/>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menuTask"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionHelp">
+   <property name="text">
+    <string>Помощь</string>
+   </property>
+  </action>
+  <action name="actionTask">
+   <property name="text">
+    <string>Задание</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>О программе</string>
+   </property>
+  </action>
+  <action name="actionSolve">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Решить</string>
+   </property>
+  </action>
+  <action name="actionDefaultValues">
+   <property name="text">
+    <string>Значения по умолчанию</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Выход</string>
+   </property>
+  </action>
  </widget>
- <layoutDefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
+ <layoutdefault spacing="6" margin="11"/>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>logsCount</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>checkGivenValues()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>124</x>
+     <y>50</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>82</x>
+     <y>35</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>logLength</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>checkGivenValues()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>273</x>
+     <y>50</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>230</x>
+     <y>37</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>firstLogLength</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>checkGivenValues()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>106</x>
+     <y>70</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>80</x>
+     <y>66</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>secondLogLength</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>checkGivenValues()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>251</x>
+     <y>76</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>237</x>
+     <y>71</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDefaultValues</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>fillDefaultValues()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>159</x>
+     <y>91</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>checkGivenValues()</slot>
+  <slot>fillDefaultValues()</slot>
+ </slots>
 </ui>

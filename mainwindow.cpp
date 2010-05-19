@@ -24,3 +24,50 @@ void MainWindow::changeEvent(QEvent *e)
         break;
     }
 }
+
+// Проверка исходных значений
+void MainWindow::checkGivenValues() {
+    bool OK = true;
+    int logsCount = ui->logsCount->value();
+    int logLength = ui->logLength->value();
+    int firstLength = ui->firstLogLength->value();
+    int secondLength = ui->secondLogLength->value();
+    // Бруски
+    if (firstLength > logLength || secondLength > logLength) {
+        if (firstLength > logLength)
+            ui->firstLogLength->setValue(logLength);
+        if (secondLength > logLength)
+            ui->secondLogLength->setValue(logLength);
+        ui->statusBar->showMessage(tr("Длины брусков не должны превышать длины бревна!"), 5000);
+        // OK не ставится в false по причинам юзабилити
+    } else if (!firstLength || !secondLength) {
+        ui->statusBar->showMessage(tr("Введите длины брусков!"));
+        OK = false;
+    } else OK = true;
+    // Бревно
+    if (!logLength) {
+        ui->statusBar->showMessage(tr("Введите длину бревна!"));
+        OK = false;
+    }
+    if (!logsCount) {
+        ui->statusBar->showMessage(tr("Укажите количество брёвен!"));
+        OK = false;
+    }
+    if (OK) {
+        ui->solutionLabel->setText(tr("Нажмите «решить», чтобы получить решение задачи."));
+        ui->statusBar->showMessage(tr("Готов решать!"));
+        ui->solveButton->setEnabled(true);
+        ui->actionSolve->setEnabled(true);
+    } else {
+        ui->solutionLabel->setText(tr("Исходные данные, похоже, ещё некорректны."));
+        ui->solveButton->setEnabled(false);
+        ui->actionSolve->setEnabled(false);
+    }
+}
+
+void MainWindow::fillDefaultValues() {
+    ui->logsCount->setValue(20);
+    ui->logLength->setValue(5);
+    ui->firstLogLength->setValue(2);
+    ui->secondLogLength->setValue(3);
+}

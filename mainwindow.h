@@ -18,6 +18,11 @@ protected:
 
 private:
     Ui::MainWindow *ui;
+
+private slots:
+    void checkGivenValues();
+    void fillDefaultValues();
+
 };
 
 #endif // MAINWINDOW_H
