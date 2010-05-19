@@ -1,0 +1,39 @@
+# In repository we don't need to have:
+# Compiled object files
+*.[ao]
+
+# Makefiles and other machine-specific files
+Makefile
+Makefile.*
+*.pro.user
+
+# Generated MOC, resource and UI files
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+
+# Debug and Release directories (created under Windows, not Linux)
+Debug/
+Release/
+
+# .log files (usually created by QtTest)
+*.log
+
+# Built windows .exe and linux binaries
+*.exe
+*.dll
+EDTKW
+*.so
+
+# Windows-specific files
+Thumbs.db
+desktop.ini
+# Mac-specific things
+.DS_Store
+
+# Editors temporary files 
+*~
+*.bak
+*.BAK
+*.tmp
+*.old
