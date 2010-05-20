@@ -42,7 +42,7 @@ void MainWindow::checkGivenValues() {
         ui->statusBar->showMessage(
                 tr("Длины брусков не должны превышать длины бревна!"), 5000);
         dontChangeStatus = true; // Чтобы увидели это сообщение -^
-        // OK не ставится в false по причинам юзабилити
+        OK = firstLength && secondLength; // Только если указаны обе длины
     } else if (!firstLength || !secondLength) {
         ui->statusBar->showMessage(tr("Введите длины брусков!"));
         OK = false;

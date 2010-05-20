@@ -174,7 +174,7 @@
      <x>0</x>
      <y>0</y>
      <width>400</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTask">
@@ -377,7 +377,7 @@
   </connection>
   <connection>
    <sender>actionDefaultValues</sender>
-   <signal>activated()</signal>
+   <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>fillDefaultValues()</slot>
    <hints>
@@ -393,7 +393,7 @@
   </connection>
   <connection>
    <sender>actionQuit</sender>
-   <signal>activated()</signal>
+   <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>close()</slot>
    <hints>
