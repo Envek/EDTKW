@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/cross.png</file>
+        <file>icons/lightning.png</file>
+        <file>icons/script-text.png</file>
+        <file>icons/table-import.png</file>
+        <file>icons/information-white.png</file>
+        <file>icons/question-white.png</file>
+    </qresource>
+</RCC>
