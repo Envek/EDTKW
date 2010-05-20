@@ -22,7 +22,7 @@ private:
 private slots:
     void checkGivenValues();
     void fillDefaultValues();
-
+    void solve();
 };
 
 #endif // MAINWINDOW_H
