@@ -113,20 +113,31 @@ void MainWindow::solve() {
     QList<double> s4;
     s4 << 0 << secondCount << floor(secondPossible)+1 << 0;
     simplex.append(s4);
+    // Символьные обозначения строк и столбцов
+    QStringList rows, cols;
+    rows << "Z" << "S1" << "S2" << "S3" << "S4";
+    cols << "X" << "Y" << "Решение" << "Отношение";
     // Симплекс-метод
     int col, row, i, j;
     bool optimal;
+    int ir = simplex.at(0).length()-1; // Индекс (номер) колонки "отношение"
+    int ia = ir-1;                     // Индекс (номер) колонки "решение"
+    double min;
     do {
-        // Выбор столбца 1 или 2 (на данный момент примитивно и без расширяемости)
-        col = simplex.at(0).at(1) < simplex.at(0).at(0) ? 1 : 0;
+        // Выбор столбца
+        col = 0;
+        min = simplex[0][col];
+        for (i=1; i<ir; i++) {
+            if (simplex[0][i] < min) col = i;
+        }
         // Выбор строки
         row = 1;
         while (!simplex[row][col])
             row++;
-        double min = !simplex[row][col] ? 0 : simplex[row][2]/simplex[row][col];
-        for (i=row+1; i<5; i++) {
-            simplex[i][3] = !simplex[i][col] ? 0 : simplex[i][2]/simplex[i][col];
-            if (simplex[i][3] < min && simplex[i][3]) row = i;
+        min = !simplex[row][col] ? 0 : simplex[row][2]/simplex[row][col];
+        for (i=row+1; i<simplex.length(); i++) {
+            simplex[i][ir] = !simplex[i][col] ? 0 : simplex[i][ia]/simplex[i][col];
+            if (simplex[i][ir] < min && simplex[i][ir]) row = i;
         }
         // Непосредственно вся соль симплекс-метода
         for (i=0; i<simplex.length(); i++) {
@@ -143,7 +154,7 @@ void MainWindow::solve() {
         }
         // Проверка оптимальности
         optimal = true;
-        for (i=0; i<2; i++) {
+        for (i=0; i<ia; i++) {
             if (simplex.at(0).at(i) < 0) {
                 optimal = false;
             }
