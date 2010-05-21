@@ -77,15 +77,18 @@ void MainWindow::fillDefaultValues() {
 }
 
 void MainWindow::solve() {
-    int logsCount    = ui->logsCount->value();
-    int logLength    = ui->logLength->value();
-    int firstLength  = ui->firstLogLength->value();
-    int secondLength = ui->secondLogLength->value();
-    int firstCount   = 1;
-    int secondCount  = 1;
-    int maxLen = logsCount*logLength;
+    int logsCount    = ui->logsCount->value();       // Количество брёвен всего
+    int logLength    = ui->logLength->value();       // Длина одного бревна
+    int firstLength  = ui->firstLogLength->value();  // Длина первого бруска
+    int secondLength = ui->secondLogLength->value(); // Длина второго бруска
+    int firstCount   = 1; // Кол-ва брусков в комплекте сделаны фиксированными.
+    int secondCount  = 1; // Но, если хотите, можно вынести и крутилку в GUI.
+    int maxLen = logsCount*logLength; // Если б было одно бревно такой длины...
+    // Длина идеального бревна на 1 комплект
     int requiredLen = firstCount*firstLength + secondCount*secondLength;
+    // Чисто теоретически можно сделать столько комплектов
     double allPossible = maxLen/requiredLen;
+    // Ну или вот столько первых и вторых брусков соответственно
     double firstPossible = allPossible/(firstCount+secondCount)*firstCount;
     double secondPossible = allPossible/(firstCount+secondCount)*secondCount;
     // Симплекс-таблица
@@ -94,19 +97,19 @@ void MainWindow::solve() {
     QList<double> z;
     z << -firstCount << -secondCount << 0 << 0;
     simplex.append(z);
-    // 1st row
+    // 1-я строка (S1)
     QList<double> s1;
     s1 << firstCount << 0 << floor(firstPossible) << 0;
     simplex.append(s1);
-    // 2nd row
+    // 2-я строка (S2)
     QList<double> s2;
     s2 << firstCount << 0 << floor(firstPossible)+1 << 0;
     simplex.append(s2);
-    // 3rd row
+    // 3-я строка (S3)
     QList<double> s3;
     s3 << 0 << secondCount << floor(secondPossible) << 0;
     simplex.append(s3);
-    // 4th row
+    // 4-я строка (S4)
     QList<double> s4;
     s4 << 0 << secondCount << floor(secondPossible)+1 << 0;
     simplex.append(s4);
@@ -114,16 +117,18 @@ void MainWindow::solve() {
     int col, row, i, j;
     bool optimal;
     do {
-        // Выбор столбца
+        // Выбор столбца 1 или 2 (на данный момент примитивно и без расширяемости)
         col = simplex.at(0).at(1) < simplex.at(0).at(0) ? 1 : 0;
         // Выбор строки
         row = 1;
-        double min = simplex.at(1).at(2)/simplex.at(1).at(col);
-        for (i=1; i<5; i++) {
-           simplex[i][3] = simplex[i][2]/simplex[i][col];
-           if (simplex.at(i).at(3) < min) row = i;
+        while (!simplex[row][col])
+            row++;
+        double min = !simplex[row][col] ? 0 : simplex[row][2]/simplex[row][col];
+        for (i=row+1; i<5; i++) {
+            simplex[i][3] = !simplex[i][col] ? 0 : simplex[i][2]/simplex[i][col];
+            if (simplex[i][3] < min && simplex[i][3]) row = i;
         }
-        // DO A BARREL ROLL
+        // Непосредственно вся соль симплекс-метода
         for (i=0; i<simplex.length(); i++) {
             if (i!=row) {
                 double multiplier = -simplex[i][col]/simplex[row][col];
@@ -134,7 +139,7 @@ void MainWindow::solve() {
         }
         double multiplier = 1.0/simplex[row][col];
         for (j=0; j<simplex[row].length()-1; j++) {
-            simplex[row][j] += simplex[row][j]*multiplier;
+            simplex[row][j] *= multiplier;
         }
         // Проверка оптимальности
         optimal = true;
