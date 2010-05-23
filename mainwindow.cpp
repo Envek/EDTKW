@@ -91,8 +91,25 @@ void MainWindow::solve() {
     // Чисто теоретически можно сделать столько комплектов
     double allPossible = double(maxLen)/double(requiredLen);
     // Ну или вот столько первых и вторых брусков соответственно
-    double firstPossible = allPossible/double(firstCount+secondCount)*firstCount;
-    double secondPossible = allPossible/double(firstCount+secondCount)*secondCount;
+    double firstPossible, secondPossible;
+    // ОСТОРОЖНО, КОСТЫЛЬ! Расчитываем кол-во брусков в завис. от суммы их длин
+    if (requiredLen<=logLength) {
+        firstPossible = allPossible/double(firstCount+secondCount)*firstCount;
+        secondPossible = allPossible/double(firstCount+secondCount)*secondCount;
+    } else { // Число 2.0 ниже имеет сакральный смысл и тщательно подобрано
+        firstPossible = double(logsCount*(logLength/firstLength))/
+                               double(firstCount+secondCount)/2.0*firstCount;
+        secondPossible = double(logsCount*(logLength/secondLength))/
+                               double(firstCount+secondCount)/2.0*secondCount;
+    } // ОСТОРОЖНО, КОСТЫЛЬ! Исправление бага с нерасчётом нечётных ответов
+    if (firstPossible - floor(firstPossible) >= 0.5 &&
+        secondPossible - floor(secondPossible >= 0.5)) {
+        firstPossible = floor(firstPossible) + 0.5;
+        secondPossible = floor(secondPossible) + 0.5;
+    } else { // Целочисленность результата гарантируются (увеличиваются оба)
+        firstPossible = floor(firstPossible);
+        secondPossible = floor(secondPossible);
+    } // Конец глобальных костылей
     // Симплекс-таблица
     QList< QList<double> > simplex;
     // Z-строка
@@ -101,7 +118,7 @@ void MainWindow::solve() {
     simplex.append(z);
     // 1-я строка (S1)
     QList<double> s1;
-    s1 << firstCount << 0 << floor(firstPossible) << 0;
+    s1 << firstCount << 0 << firstPossible << 0; // Must be floor(firstPossible)
     simplex.append(s1);
     // 2-я строка (S2)
     QList<double> s2;
@@ -109,7 +126,7 @@ void MainWindow::solve() {
     simplex.append(s2);
     // 3-я строка (S3)
     QList<double> s3;
-    s3 << 0 << secondCount << floor(secondPossible) << 0;
+    s3 << 0 << secondCount << secondPossible << 0; // Must be floor(secondPossible)
     simplex.append(s3);
     // 4-я строка (S4)
     QList<double> s4;
