@@ -23,6 +23,7 @@ private slots:
     void checkGivenValues();
     void fillDefaultValues();
     void solve();
+    void onSolutionDisplayChanged(bool state);
 };
 
 #endif // MAINWINDOW_H

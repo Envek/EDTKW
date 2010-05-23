@@ -7,6 +7,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    //ui->showSolutionCheckBox->setChecked(false);
+    //onSolutionDisplayChanged(false);
 }
 
 MainWindow::~MainWindow()
@@ -161,4 +163,17 @@ void MainWindow::solve() {
         }
     } while (!optimal);
     ui->solutionLabel->setText(tr("%1").arg(simplex[0][2]));
+}
+
+void MainWindow::onSolutionDisplayChanged(bool state) {
+    ui->solutionBrowser->setVisible(state);
+    if (state) {
+        setGeometry(geometry().x(), geometry().y(),
+                    geometry().width(), geometry().height()+200);
+        setMinimumHeight(minimumHeight()+200);
+    } else {
+        setMinimumHeight(minimumHeight()-200);
+        setGeometry(geometry().x(), geometry().y(),
+                    geometry().width(), geometry().height()-200);
+    }
 }
