@@ -3,6 +3,10 @@
 
 #include <QMainWindow>
 
+QT_BEGIN_NAMESPACE
+class QTextBrowser;
+QT_END_NAMESPACE
+
 namespace Ui {
     class MainWindow;
 }
@@ -24,6 +28,18 @@ private slots:
     void fillDefaultValues();
     void solve();
     void onSolutionDisplayChanged(bool state);
+
+    void prepareSolutionBrowser();
+    void finishSolutionBrowser();
+    void drawSimplexTable(const QList< QList <double> > simplex,
+                         const QStringList rows, const QStringList cols,
+                         const int row, const int col);
+
+signals:
+    void newSimplexTable(const QList< QList <double> > simplex,
+                         const QStringList rows, const QStringList cols,
+                         const int row, const int col);
+
 };
 
 #endif // MAINWINDOW_H

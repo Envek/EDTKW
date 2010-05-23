@@ -1,14 +1,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <qmath.h>
+#include <QtGui>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    //ui->showSolutionCheckBox->setChecked(false);
-    //onSolutionDisplayChanged(false);
 }
 
 MainWindow::~MainWindow()
@@ -79,6 +78,7 @@ void MainWindow::fillDefaultValues() {
 }
 
 void MainWindow::solve() {
+    prepareSolutionBrowser();
     int logsCount    = ui->logsCount->value();       // Количество брёвен всего
     int logLength    = ui->logLength->value();       // Длина одного бревна
     int firstLength  = ui->firstLogLength->value();  // Длина первого бруска
@@ -117,8 +117,8 @@ void MainWindow::solve() {
     simplex.append(s4);
     // Символьные обозначения строк и столбцов
     QStringList rows, cols;
-    rows << "Z" << "S1" << "S2" << "S3" << "S4";
-    cols << "X" << "Y" << "Решение" << "Отношение";
+    rows << tr("Z") << tr("S1") << tr("S2") << tr("S3") << tr("S4");
+    cols << tr("X") << tr("Y") << tr("Реш.") << tr("Отн.");
     // Симплекс-метод
     int col, row, i, j;
     bool optimal;
@@ -141,6 +141,10 @@ void MainWindow::solve() {
             simplex[i][ir] = !simplex[i][col] ? 0 : simplex[i][ia]/simplex[i][col];
             if (simplex[i][ir] < min && simplex[i][ir]) row = i;
         }
+        // Рисуем новую симплекс-таблицу
+        drawSimplexTable(simplex, rows, cols, row, col);
+
+        rows[row] = cols[col];
         // Непосредственно вся соль симплекс-метода
         for (i=0; i<simplex.length(); i++) {
             if (i!=row) {
@@ -162,7 +166,10 @@ void MainWindow::solve() {
             }
         }
     } while (!optimal);
+
+    drawSimplexTable(simplex, rows, cols, -1, -1);
     ui->solutionLabel->setText(tr("%1").arg(simplex[0][2]));
+    ui->hintLabel->setText(tr("Всего максимально возможно получить комплектов:"));
 }
 
 void MainWindow::onSolutionDisplayChanged(bool state) {
@@ -176,4 +183,72 @@ void MainWindow::onSolutionDisplayChanged(bool state) {
         setGeometry(geometry().x(), geometry().y(),
                     geometry().width(), geometry().height()-200);
     }
+}
+
+void MainWindow::prepareSolutionBrowser() {
+    ui->solutionBrowser->clear();
+}
+
+void MainWindow::finishSolutionBrowser() {
+
+}
+
+// Рисуем симплекс-таблицу в solutionBrowser
+void MainWindow::drawSimplexTable(QList<QList<double> >simplex,
+                                  QStringList rows, QStringList cols,
+                                  int row, int col)
+{
+    QTextCursor cursor = ui->solutionBrowser->textCursor();
+    cursor.beginEditBlock();
+
+    QTextTableFormat tableFormat;
+    tableFormat.setAlignment(Qt::AlignHCenter);
+    tableFormat.setCellPadding(2);
+    tableFormat.setCellSpacing(0);
+    tableFormat.setHeaderRowCount(1);
+
+    QVector<QTextLength> constraints;
+    for (int i=0; i<cols.count()+1; i++)
+        constraints << QTextLength(QTextLength::PercentageLength, 100/(cols.count()+1));
+    tableFormat.setColumnWidthConstraints(constraints);
+
+    QTextTable *table = cursor.insertTable(rows.count()+1, cols.count()+1, tableFormat);
+
+    // Различные форматы текста
+    QTextCharFormat format = cursor.charFormat();
+    format.setFontPointSize(10);
+    QTextCharFormat boldFormat = format;
+    boldFormat.setFontWeight(QFont::Bold);
+    QTextCharFormat highlightedFormat = boldFormat;
+    highlightedFormat.setBackground(Qt::yellow);
+
+    // Устанавливаем заголовки столбцов
+    for (int i = 0; i < cols.count(); i++) {
+        QTextTableCell cell = table->cellAt(0, i+1);
+        QTextCursor cellCursor = cell.firstCursorPosition();
+        if (i == col && col >= 0)
+            cellCursor.insertText(cols.at(i), highlightedFormat);
+        else
+            cellCursor.insertText(cols.at(i), boldFormat);
+    }
+    // Устанавливаем заголовки строк
+    for (int i = 0; i < rows.count(); i++) {
+        QTextTableCell cell = table->cellAt(i+1, 0);
+        QTextCursor cellCursor = cell.firstCursorPosition();
+        if (i == row && row >= 0)
+            cellCursor.insertText(rows.at(i), highlightedFormat);
+        else
+            cellCursor.insertText(rows.at(i), boldFormat);
+    }
+    // Заполняем симплекс-таблицу
+    for (int i=0; i<simplex.count(); i++) {
+        for (int j=0; j<cols.count(); j++) {
+            QTextTableCell cell = table->cellAt(i+1, j+1);
+            QTextCursor cellCursor = cell.firstCursorPosition();
+            cellCursor.insertText(tr("%1").arg(simplex.at(i).at(j)), format);
+        }
+    }
+    cursor.endEditBlock();
+    cursor.movePosition(cursor.End);
+    cursor.insertHtml("<br />");
 }
