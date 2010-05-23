@@ -89,10 +89,10 @@ void MainWindow::solve() {
     // Длина идеального бревна на 1 комплект
     int requiredLen = firstCount*firstLength + secondCount*secondLength;
     // Чисто теоретически можно сделать столько комплектов
-    double allPossible = maxLen/requiredLen;
+    double allPossible = double(maxLen)/double(requiredLen);
     // Ну или вот столько первых и вторых брусков соответственно
-    double firstPossible = allPossible/(firstCount+secondCount)*firstCount;
-    double secondPossible = allPossible/(firstCount+secondCount)*secondCount;
+    double firstPossible = allPossible/double(firstCount+secondCount)*firstCount;
+    double secondPossible = allPossible/double(firstCount+secondCount)*secondCount;
     // Симплекс-таблица
     QList< QList<double> > simplex;
     // Z-строка
@@ -135,8 +135,9 @@ void MainWindow::solve() {
         // Выбор строки
         row = 1;
         while (!simplex[row][col])
-            row++;
+            simplex[row++][ir] = 0;
         min = !simplex[row][col] ? 0 : simplex[row][2]/simplex[row][col];
+        simplex[row][ir] = !simplex[row][col] ? 0 : simplex[row][ia]/simplex[row][col];
         for (i=row+1; i<simplex.length(); i++) {
             simplex[i][ir] = !simplex[i][col] ? 0 : simplex[i][ia]/simplex[i][col];
             if (simplex[i][ir] < min && simplex[i][ir]) row = i;
@@ -166,7 +167,10 @@ void MainWindow::solve() {
             }
         }
     } while (!optimal);
-
+    // Очищаем столбец "отношение" в симплекс-таблице
+    for (i=0; i<simplex.count(); i++)
+        simplex[i][ir] = 0;
+    // FIN
     drawSimplexTable(simplex, rows, cols, -1, -1);
     ui->solutionLabel->setText(tr("%1").arg(simplex[0][2]));
     ui->hintLabel->setText(tr("Всего максимально возможно получить комплектов:"));
