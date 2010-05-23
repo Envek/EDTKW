@@ -191,6 +191,8 @@ void MainWindow::solve() {
     drawSimplexTable(simplex, rows, cols, -1, -1);
     ui->solutionLabel->setText(tr("%1").arg(simplex[0][2]));
     ui->hintLabel->setText(tr("Всего максимально возможно получить комплектов:"));
+    printCuttingPlan(simplex[0][2], logLength, logsCount, firstLength,
+                     firstCount, secondLength, secondCount);
 }
 
 void MainWindow::onSolutionDisplayChanged(bool state) {
@@ -210,8 +212,40 @@ void MainWindow::prepareSolutionBrowser() {
     ui->solutionBrowser->clear();
 }
 
-void MainWindow::finishSolutionBrowser() {
-
+void MainWindow::printCuttingPlan(int answer, int logLength, int logsCount,
+                                  int firstLen, int firstCount,
+                                  int secondLen, int secondCount)
+{
+    QTextCursor cursor = ui->solutionBrowser->textCursor();
+    cursor.insertHtml(QString("<h1>") + tr("План распила") + QString("</h1>"));
+    QStringList plan;
+    int first = answer*firstCount;
+    int second = answer*secondCount;
+    for (int i=0; i<logsCount; i++) {
+        int firstThere = 0, secondThere = 0, length=logLength;
+        if (firstLen < secondLen)
+           qSwap(firstLen, secondLen);
+        while (first && length >= firstLen) {
+            firstThere++;
+            length -= firstLen;
+            first--;
+        }
+        while (second && length >= secondLen) {
+            secondThere++;
+            length -= secondLen;
+            second--;
+        }
+        if (firstThere || secondThere)
+            plan << QString("<li>") +
+                    tr("Первых брусков: <strong>%1</strong>; вторых: <strong>"
+                       "%2</strong>; метров остатков: %3;").arg(firstThere)
+                    .arg(secondThere).arg(length) + QString("</li>");
+        else
+            plan << QString("<li>") +
+                    tr("Нет смысла распиливать - комплекта уже не получить")
+                    + QString("</li>");
+    }
+    cursor.insertHtml(QString("<ol>") + plan.join(QString("")) + QString("</ol>"));
 }
 
 // Рисуем симплекс-таблицу в solutionBrowser

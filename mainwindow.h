@@ -30,7 +30,9 @@ private slots:
     void onSolutionDisplayChanged(bool state);
 
     void prepareSolutionBrowser();
-    void finishSolutionBrowser();
+    void printCuttingPlan(int answer, int logLength, int logsCount,
+                          int firstLen, int firstCount,
+                          int secondLen, int secondCount);
     void drawSimplexTable(const QList< QList <double> > simplex,
                          const QStringList rows, const QStringList cols,
                          const int row, const int col);
