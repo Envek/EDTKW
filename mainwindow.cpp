@@ -153,11 +153,14 @@ void MainWindow::solve() {
         row = 1;
         while (!simplex[row][col])
             simplex[row++][ir] = 0;
-        min = !simplex[row][col] ? 0 : simplex[row][2]/simplex[row][col];
-        simplex[row][ir] = !simplex[row][col] ? 0 : simplex[row][ia]/simplex[row][col];
+        min = simplex[row][col]<=0 ? 16777215 : simplex[row][ia]/simplex[row][col];
+        simplex[row][ir] = simplex[row][col]<=0 ? 0 : simplex[row][ia]/simplex[row][col];
         for (i=row+1; i<simplex.length(); i++) {
             simplex[i][ir] = !simplex[i][col] ? 0 : simplex[i][ia]/simplex[i][col];
-            if (simplex[i][ir] < min && simplex[i][ir]) row = i;
+            if (simplex[i][ir] < min && simplex[i][ir]) {
+                row = i;
+                min = simplex[i][ir];
+            }
         }
         // Рисуем новую симплекс-таблицу
         drawSimplexTable(simplex, rows, cols, row, col);
@@ -191,7 +194,7 @@ void MainWindow::solve() {
     drawSimplexTable(simplex, rows, cols, -1, -1);
     ui->solutionLabel->setText(tr("%1").arg(simplex[0][2]));
     ui->hintLabel->setText(tr("Всего максимально возможно получить комплектов:"));
-    printCuttingPlan(simplex[0][2], logLength, logsCount, firstLength,
+    printCuttingPlan(simplex[0][ia], logLength, logsCount, firstLength,
                      firstCount, secondLength, secondCount);
 }
 
@@ -210,6 +213,11 @@ void MainWindow::onSolutionDisplayChanged(bool state) {
 
 void MainWindow::prepareSolutionBrowser() {
     ui->solutionBrowser->clear();
+    QTextCursor cursor = ui->solutionBrowser->textCursor();
+    cursor.beginEditBlock();
+    cursor.movePosition(cursor.StartOfLine);
+    cursor.insertHtml(QString("<h2>") + tr("Ход решения") + QString("</h2>"));
+    cursor.endEditBlock();
 }
 
 void MainWindow::printCuttingPlan(int answer, int logLength, int logsCount,
@@ -217,7 +225,9 @@ void MainWindow::printCuttingPlan(int answer, int logLength, int logsCount,
                                   int secondLen, int secondCount)
 {
     QTextCursor cursor = ui->solutionBrowser->textCursor();
-    cursor.insertHtml(QString("<h1>") + tr("План распила") + QString("</h1>"));
+    cursor.movePosition(cursor.Start);
+    cursor.beginEditBlock();
+    cursor.insertHtml(QString("<h2>") + tr("План распила") + QString("</h2>"));
     QStringList plan;
     int first = answer*firstCount;
     int second = answer*secondCount;
@@ -245,7 +255,9 @@ void MainWindow::printCuttingPlan(int answer, int logLength, int logsCount,
                     tr("Нет смысла распиливать - комплекта уже не получить")
                     + QString("</li>");
     }
-    cursor.insertHtml(QString("<ol>") + plan.join(QString("")) + QString("</ol>"));
+    cursor.insertHtml(QString(" <ol> ") + plan.join(QString(" ")) + QString(" </ol> "));
+    cursor.insertHtml(QString(" <br /> <br /> "));
+    cursor.endEditBlock();
 }
 
 // Рисуем симплекс-таблицу в solutionBrowser
@@ -306,4 +318,54 @@ void MainWindow::drawSimplexTable(QList<QList<double> >simplex,
     cursor.endEditBlock();
     cursor.movePosition(cursor.End);
     cursor.insertHtml("<br />");
+}
+
+void MainWindow::showAbout() {
+        QMessageBox::about(this, tr("О программе"),
+                     tr("<center><h2>КУРСОВАЯ РАБОТА</h2></center>"
+                        "<p>по дисциплине «Теория принятия решений»</p>"
+                        "<p>По теме: «линейное программирование»</p><p></p>"
+                        "<p>Исполнитель: студент группы 753   А.А. Новиков</p>"
+                        "<p></p><p></p><p>Курсовая работа написана на языке "
+                        "программирования <strong>C++</strong> с использованием "
+                        "програмного каркаса <strong>Qt</strong></p>"
+                        ));
+}
+
+void MainWindow::showHelp() {
+    QMessageBox::about(this, tr("Помощь"),
+                       tr("<h3>Помощь</h3>"
+                          "<p>Введите все требуемые значения в поля ввода или "
+                          "выберите нужное посредством стрелок возле полей "
+                          "ввода и нажмите «Решить».</p>"
+                          "<p>До тех пор, пока вы не введёте корректные данные "
+                          "во все поля ввода, кнопка «Решить» будет неактивной</p>"
+                          "<p>Для ввода значений по умолчанию (указанных в "
+                          "условии к задаче) используйте пункт меню Задача -> "
+                          "Значения по умолчанию или комбинацию клавиш Ctrl+D "
+                          "и затем снова нажмите «Решить» (или клавишу Enter).</p>"
+                          "<p>Над блоком кнопок будет выведен ответ, а в "
+                          "текстовой области внизу будет показан план распила "
+                          "для всех брёвен, а так же ход решения, причём "
+                          "первая (верхняя) симплекс-таблица - исходная, "
+                          "последняя - результирующая. Во всех таблицах, кроме "
+                          "результирующей, цветом выделены разрешающие строка "
+                          "и столбец.</p>"
+                          ));
+}
+
+void MainWindow::showTask() {
+    QMessageBox::about(this, tr("Задача"),
+                 tr("<h3>Задание</h3>"
+                    "<p>Составить математическое описание, выбрать метод "
+                    "математического программирования и написать программу "
+                    "для реализации следующей задачи:</p>"
+                    "<p>Необходимо распилить 20 брёвен длиной по 5 метров "
+                    "каждое на бруски по 2 и 3 метра, при этом должно "
+                    "получиться равное количество брусков каждого размера. "
+                    "Составить такой план распила, при котором будет получено "
+                    "максимальное количество комплектов и все брёвна будут "
+                    "распилены (в один комплект входит по одному бруску "
+                    "каждого размера).</p>"
+                    ));
 }

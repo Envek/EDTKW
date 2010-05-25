@@ -28,7 +28,9 @@ private slots:
     void fillDefaultValues();
     void solve();
     void onSolutionDisplayChanged(bool state);
-
+    void showAbout();
+    void showHelp();
+    void showTask();
     void prepareSolutionBrowser();
     void printCuttingPlan(int answer, int logLength, int logsCount,
                           int firstLen, int firstCount,

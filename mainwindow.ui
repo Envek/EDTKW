@@ -316,8 +316,8 @@
    <slot>checkGivenValues()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>124</x>
-     <y>50</y>
+     <x>208</x>
+     <y>48</y>
     </hint>
     <hint type="destinationlabel">
      <x>82</x>
@@ -333,7 +333,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>390</x>
-     <y>60</y>
+     <y>48</y>
     </hint>
     <hint type="destinationlabel">
      <x>230</x>
@@ -349,7 +349,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>208</x>
-     <y>86</y>
+     <y>74</y>
     </hint>
     <hint type="destinationlabel">
      <x>80</x>
@@ -365,7 +365,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>390</x>
-     <y>86</y>
+     <y>74</y>
     </hint>
     <hint type="destinationlabel">
      <x>237</x>
@@ -429,7 +429,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>390</x>
-     <y>174</y>
+     <y>164</y>
     </hint>
     <hint type="destinationlabel">
      <x>209</x>
@@ -453,11 +453,62 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionAbout</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>showAbout()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>214</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionTask</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>showTask()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>214</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionHelp</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>showHelp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>214</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>checkGivenValues()</slot>
   <slot>fillDefaultValues()</slot>
   <slot>solve()</slot>
   <slot>onSolutionDisplayChanged(bool)</slot>
+  <slot>showAbout()</slot>
+  <slot>showHelp()</slot>
+  <slot>showTask()</slot>
  </slots>
 </ui>
