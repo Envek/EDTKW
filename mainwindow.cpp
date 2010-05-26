@@ -202,12 +202,12 @@ void MainWindow::onSolutionDisplayChanged(bool state) {
     ui->solutionBrowser->setVisible(state);
     if (state) {
         setGeometry(geometry().x(), geometry().y(),
-                    geometry().width(), geometry().height()+200);
-        setMinimumHeight(minimumHeight()+200);
+                    geometry().width(), geometry().height()+225);
+        setMinimumHeight(minimumHeight()+225);
     } else {
-        setMinimumHeight(minimumHeight()-200);
+        setMinimumHeight(minimumHeight()-225);
         setGeometry(geometry().x(), geometry().y(),
-                    geometry().width(), geometry().height()-200);
+                    geometry().width(), minimumHeight());
     }
 }
 
@@ -333,6 +333,9 @@ void MainWindow::showAbout() {
                         "разработки и новые версии могут быть найдены здесь: "
                         "<a href='http://github.com/Envek/EDTKW'>"
                         "http://github.com/Envek/EDTKW</a>.</p>"
+                        "<br /><p>Данная программа не одобрена Greenpeace.<br />"
+                        "Greenpeace запрещает использовать данную программу.</p>"
+                        "<p><big>プログラムを使用していただきありがとうございます。</big></p>"
                         ));
 }
 

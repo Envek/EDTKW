@@ -8,3 +8,7 @@ SOURCES += main.cpp \
 HEADERS += mainwindow.h
 FORMS += mainwindow.ui
 RESOURCES += icons.qrc
+OTHER_FILES += EDTKW.rc
+
+# Чтобы в Windows у программы была иконка
+win32:RC_FILE = EDTKW.rc

@@ -6,5 +6,6 @@
         <file>icons/table-import.png</file>
         <file>icons/information-white.png</file>
         <file>icons/question-white.png</file>
+        <file>icons/buding.ico</file>
     </qresource>
 </RCC>
