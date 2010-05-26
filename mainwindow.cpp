@@ -312,7 +312,10 @@ void MainWindow::drawSimplexTable(QList<QList<double> >simplex,
         for (int j=0; j<cols.count(); j++) {
             QTextTableCell cell = table->cellAt(i+1, j+1);
             QTextCursor cellCursor = cell.firstCursorPosition();
-            cellCursor.insertText(tr("%1").arg(simplex.at(i).at(j)), format);
+            if (j!=cols.length()-2) // Костыль, чтобы скрыть действие других костылей
+                cellCursor.insertText(tr("%1").arg(simplex.at(i).at(j)), format);
+            else // В столбце "Решение" просто отбрасываем дробную часть и всё ОК
+                cellCursor.insertText(tr("%1").arg(int(simplex.at(i).at(j))), format);
         }
     }
     cursor.endEditBlock();
