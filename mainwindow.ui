@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>450</width>
     <height>430</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>400</width>
+    <width>450</width>
     <height>430</height>
    </size>
   </property>
@@ -20,7 +20,7 @@
    <string>Курсовая работа по ТПР. Новиков Андрей, 753.</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="icons.qrc">
     <normaloff>:/icons/buding.ico</normaloff>:/icons/buding.ico</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -102,7 +102,7 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="2" colspan="2">
+    <item row="5" column="2" colspan="2">
      <widget class="QPushButton" name="solveButton">
       <property name="enabled">
        <bool>false</bool>
@@ -130,7 +130,7 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="0" colspan="2">
+    <item row="5" column="0" colspan="2">
      <widget class="QCheckBox" name="showSolutionCheckBox">
       <property name="minimumSize">
        <size>
@@ -146,11 +146,11 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="0" colspan="4">
+    <item row="2" column="0" colspan="3">
      <widget class="QLabel" name="hintLabel">
       <property name="font">
        <font>
-        <pointsize>11</pointsize>
+        <pointsize>10</pointsize>
        </font>
       </property>
       <property name="text">
@@ -158,7 +158,10 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="0" colspan="4">
+    <item row="6" column="0" colspan="4">
+     <widget class="QTextBrowser" name="solutionBrowser"/>
+    </item>
+    <item row="2" column="3">
      <widget class="QLabel" name="solutionLabel">
       <property name="font">
        <font>
@@ -178,8 +181,12 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="0" colspan="4">
-     <widget class="QTextBrowser" name="solutionBrowser"/>
+    <item row="4" column="0" colspan="4">
+     <widget class="QLabel" name="descriptionLabel">
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -188,7 +195,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>400</width>
+     <width>450</width>
      <height>20</height>
     </rect>
    </property>
@@ -215,7 +222,7 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionHelp">
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/question-white.png</normaloff>:/icons/question-white.png</iconset>
    </property>
    <property name="text">
@@ -230,7 +237,7 @@
   </action>
   <action name="actionTask">
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/script-text.png</normaloff>:/icons/script-text.png</iconset>
    </property>
    <property name="text">
@@ -245,7 +252,7 @@
   </action>
   <action name="actionAbout">
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/information-white.png</normaloff>:/icons/information-white.png</iconset>
    </property>
    <property name="text">
@@ -266,7 +273,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/lightning.png</normaloff>:/icons/lightning.png</iconset>
    </property>
    <property name="text">
@@ -281,7 +288,7 @@
   </action>
   <action name="actionDefaultValues">
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/table-import.png</normaloff>:/icons/table-import.png</iconset>
    </property>
    <property name="text">
@@ -296,7 +303,7 @@
   </action>
   <action name="actionQuit">
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/cross.png</normaloff>:/icons/cross.png</iconset>
    </property>
    <property name="text">
@@ -314,7 +321,9 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>logsCount</sender>

@@ -189,18 +189,27 @@ void MainWindow::solve() {
     int answer = simplex[0][ia]/(firstCount+secondCount);
     ui->solutionLabel->setText(tr("%1").arg(answer));
     ui->hintLabel->setText(tr("Всего максимально возможно получить комплектов:"));
+    ui->descriptionLabel->setText(
+            tr("Всего может быть получено <big><strong>%1</strong></big> "
+               "брусков (<strong>Z</strong>). Из них <big><strong>%2</strong>"
+               "</big> первых (<strong>X</strong>) и <big><strong>%3</strong>"
+               "</big> вторых (<strong>Y</strong>).")
+            .arg(simplex.at(rows.indexOf(tr("Z"))).at(ia))
+            .arg(simplex.at(rows.indexOf(tr("X"))).at(ia))
+            .arg(simplex.at(rows.indexOf(tr("Y"))).at(ia)));
     printCuttingPlan(answer, logLength, logsCount, firstLength,
                      firstCount, secondLength, secondCount);
+    ui->statusBar->showMessage(tr("Решение найдено! Готов решать ещё!"));
 }
 
 void MainWindow::onSolutionDisplayChanged(bool state) {
     ui->solutionBrowser->setVisible(state);
     if (state) {
         setGeometry(geometry().x(), geometry().y(),
-                    geometry().width(), geometry().height()+225);
-        setMinimumHeight(minimumHeight()+225);
+                    geometry().width(), geometry().height()+220);
+        setMinimumHeight(minimumHeight()+220);
     } else {
-        setMinimumHeight(minimumHeight()-225);
+        setMinimumHeight(minimumHeight()-220);
         setGeometry(geometry().x(), geometry().y(),
                     geometry().width(), minimumHeight());
     }
