@@ -85,6 +85,8 @@ void MainWindow::solve() {
     int secondLength = ui->secondLogLength->value(); // Длина второго бруска
     int firstCount   = 1; // Кол-ва брусков в комплекте сделаны фиксированными.
     int secondCount  = 1; // Но, если хотите, можно вынести и крутилку в GUI.
+    // ВНИМАНИЕ: В данной версии алгоритм некорректно работает для количества
+    // брусков, отличных от единиц!!!
     int maxLen = logsCount*logLength; // Если б было одно бревно такой длины...
     // Длина идеального бревна на 1 комплект
     int requiredLen = firstCount*firstLength + secondCount*secondLength;
@@ -94,22 +96,14 @@ void MainWindow::solve() {
     double firstPossible, secondPossible;
     // ОСТОРОЖНО, КОСТЫЛЬ! Расчитываем кол-во брусков в завис. от суммы их длин
     if (requiredLen<=logLength) {
-        firstPossible = allPossible/double(firstCount+secondCount)*firstCount;
-        secondPossible = allPossible/double(firstCount+secondCount)*secondCount;
-    } else { // Число 2.0 ниже имеет сакральный смысл и тщательно подобрано
+        firstPossible = allPossible*firstCount;
+        secondPossible = allPossible*secondCount;
+    } else {
         firstPossible = double(logsCount*(logLength/firstLength))/
-                               double(firstCount+secondCount)/2.0*firstCount;
+                               double(firstCount+secondCount)*firstCount;
         secondPossible = double(logsCount*(logLength/secondLength))/
-                               double(firstCount+secondCount)/2.0*secondCount;
-    } // ОСТОРОЖНО, КОСТЫЛЬ! Исправление бага с нерасчётом нечётных ответов
-    if (firstPossible - floor(firstPossible) >= 0.5 &&
-        secondPossible - floor(secondPossible >= 0.5)) {
-        firstPossible = floor(firstPossible) + 0.5;
-        secondPossible = floor(secondPossible) + 0.5;
-    } else { // Целочисленность результата гарантируются (увеличиваются оба)
-        firstPossible = floor(firstPossible);
-        secondPossible = floor(secondPossible);
-    } // Конец глобальных костылей
+                               double(firstCount+secondCount)*secondCount;
+    }
     // Симплекс-таблица
     QList< QList<double> > simplex;
     // Z-строка
@@ -118,7 +112,7 @@ void MainWindow::solve() {
     simplex.append(z);
     // 1-я строка (S1)
     QList<double> s1;
-    s1 << firstCount << 0 << firstPossible << 0; // Must be floor(firstPossible)
+    s1 << firstCount << 0 << floor(firstPossible) << 0;
     simplex.append(s1);
     // 2-я строка (S2)
     QList<double> s2;
@@ -126,7 +120,7 @@ void MainWindow::solve() {
     simplex.append(s2);
     // 3-я строка (S3)
     QList<double> s3;
-    s3 << 0 << secondCount << secondPossible << 0; // Must be floor(secondPossible)
+    s3 << 0 << secondCount << floor(secondPossible) << 0;
     simplex.append(s3);
     // 4-я строка (S4)
     QList<double> s4;
@@ -192,9 +186,10 @@ void MainWindow::solve() {
         simplex[i][ir] = 0;
     // FIN
     drawSimplexTable(simplex, rows, cols, -1, -1);
-    ui->solutionLabel->setText(tr("%1").arg(simplex[0][2]));
+    int answer = simplex[0][ia]/(firstCount+secondCount);
+    ui->solutionLabel->setText(tr("%1").arg(answer));
     ui->hintLabel->setText(tr("Всего максимально возможно получить комплектов:"));
-    printCuttingPlan(simplex[0][ia], logLength, logsCount, firstLength,
+    printCuttingPlan(answer, logLength, logsCount, firstLength,
                      firstCount, secondLength, secondCount);
 }
 
@@ -312,10 +307,7 @@ void MainWindow::drawSimplexTable(QList<QList<double> >simplex,
         for (int j=0; j<cols.count(); j++) {
             QTextTableCell cell = table->cellAt(i+1, j+1);
             QTextCursor cellCursor = cell.firstCursorPosition();
-            if (j!=cols.length()-2) // Костыль, чтобы скрыть действие других костылей
-                cellCursor.insertText(tr("%1").arg(simplex.at(i).at(j)), format);
-            else // В столбце "Решение" просто отбрасываем дробную часть и всё ОК
-                cellCursor.insertText(tr("%1").arg(int(simplex.at(i).at(j))), format);
+            cellCursor.insertText(tr("%1").arg(simplex.at(i).at(j)), format);
         }
     }
     cursor.endEditBlock();
