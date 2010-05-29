@@ -20,7 +20,7 @@
    <string>Курсовая работа по ТПР. Новиков Андрей, 753.</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="icons.qrc">
+   <iconset>
     <normaloff>:/icons/buding.ico</normaloff>:/icons/buding.ico</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -47,19 +47,6 @@
       <property name="text">
        <string>&amp;длиной</string>
       </property>
-      <property name="buddy">
-       <cstring>logLength</cstring>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="3">
-     <widget class="QSpinBox" name="logLength">
-      <property name="specialValueText">
-       <string>метров</string>
-      </property>
-      <property name="suffix">
-       <string> м</string>
-      </property>
      </widget>
     </item>
     <item row="1" column="0">
@@ -67,38 +54,12 @@
       <property name="text">
        <string>П&amp;ервый брусок</string>
       </property>
-      <property name="buddy">
-       <cstring>firstLogLength</cstring>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QSpinBox" name="firstLogLength">
-      <property name="specialValueText">
-       <string>метров</string>
-      </property>
-      <property name="suffix">
-       <string> м</string>
-      </property>
      </widget>
     </item>
     <item row="1" column="2">
      <widget class="QLabel" name="secondLogLengthLabel">
       <property name="text">
        <string>и &amp;второй</string>
-      </property>
-      <property name="buddy">
-       <cstring>secondLogLength</cstring>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="3">
-     <widget class="QSpinBox" name="secondLogLength">
-      <property name="specialValueText">
-       <string>метров</string>
-      </property>
-      <property name="suffix">
-       <string> м</string>
       </property>
      </widget>
     </item>
@@ -188,6 +149,51 @@
       </property>
      </widget>
     </item>
+    <item row="0" column="3">
+     <widget class="QDoubleSpinBox" name="logLength">
+      <property name="specialValueText">
+       <string>метров</string>
+      </property>
+      <property name="suffix">
+       <string> м</string>
+      </property>
+      <property name="minimum">
+       <double>0.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>999.990000000000009</double>
+      </property>
+      <property name="value">
+       <double>0.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QDoubleSpinBox" name="firstLogLength">
+      <property name="specialValueText">
+       <string>метров</string>
+      </property>
+      <property name="suffix">
+       <string> м</string>
+      </property>
+      <property name="maximum">
+       <double>999.990000000000009</double>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="3">
+     <widget class="QDoubleSpinBox" name="secondLogLength">
+      <property name="specialValueText">
+       <string>метров</string>
+      </property>
+      <property name="suffix">
+       <string> м</string>
+      </property>
+      <property name="maximum">
+       <double>999.990000000000009</double>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -222,7 +228,7 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionHelp">
    <property name="icon">
-    <iconset resource="icons.qrc">
+    <iconset>
      <normaloff>:/icons/question-white.png</normaloff>:/icons/question-white.png</iconset>
    </property>
    <property name="text">
@@ -237,7 +243,7 @@
   </action>
   <action name="actionTask">
    <property name="icon">
-    <iconset resource="icons.qrc">
+    <iconset>
      <normaloff>:/icons/script-text.png</normaloff>:/icons/script-text.png</iconset>
    </property>
    <property name="text">
@@ -252,7 +258,7 @@
   </action>
   <action name="actionAbout">
    <property name="icon">
-    <iconset resource="icons.qrc">
+    <iconset>
      <normaloff>:/icons/information-white.png</normaloff>:/icons/information-white.png</iconset>
    </property>
    <property name="text">
@@ -273,7 +279,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="icons.qrc">
+    <iconset>
      <normaloff>:/icons/lightning.png</normaloff>:/icons/lightning.png</iconset>
    </property>
    <property name="text">
@@ -288,7 +294,7 @@
   </action>
   <action name="actionDefaultValues">
    <property name="icon">
-    <iconset resource="icons.qrc">
+    <iconset>
      <normaloff>:/icons/table-import.png</normaloff>:/icons/table-import.png</iconset>
    </property>
    <property name="text">
@@ -303,7 +309,7 @@
   </action>
   <action name="actionQuit">
    <property name="icon">
-    <iconset resource="icons.qrc">
+    <iconset>
      <normaloff>:/icons/cross.png</normaloff>:/icons/cross.png</iconset>
    </property>
    <property name="text">
@@ -321,9 +327,7 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="icons.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>logsCount</sender>
@@ -338,54 +342,6 @@
     <hint type="destinationlabel">
      <x>82</x>
      <y>35</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>logLength</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>checkGivenValues()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>390</x>
-     <y>48</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>230</x>
-     <y>37</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>firstLogLength</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>checkGivenValues()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>208</x>
-     <y>74</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>80</x>
-     <y>66</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>secondLogLength</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>checkGivenValues()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>390</x>
-     <y>74</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>237</x>
-     <y>71</y>
     </hint>
    </hints>
   </connection>
@@ -514,6 +470,54 @@
     <hint type="destinationlabel">
      <x>199</x>
      <y>214</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>firstLogLength</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>checkGivenValues()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>159</x>
+     <y>61</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>181</x>
+     <y>79</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>logLength</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>checkGivenValues()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>356</x>
+     <y>32</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>53</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>secondLogLength</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>checkGivenValues()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>367</x>
+     <y>59</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>335</x>
+     <y>79</y>
     </hint>
    </hints>
   </connection>

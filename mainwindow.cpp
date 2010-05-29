@@ -32,9 +32,9 @@ void MainWindow::checkGivenValues() {
     bool OK = true;
     bool dontChangeStatus = false;
     int logsCount = ui->logsCount->value();
-    int logLength = ui->logLength->value();
-    int firstLength = ui->firstLogLength->value();
-    int secondLength = ui->secondLogLength->value();
+    double logLength = ui->logLength->value();
+    double firstLength = ui->firstLogLength->value();
+    double secondLength = ui->secondLogLength->value();
     // Бруски
     if (firstLength > logLength || secondLength > logLength) {
         if (firstLength > logLength)
@@ -45,12 +45,12 @@ void MainWindow::checkGivenValues() {
                 tr("Длины брусков не должны превышать длины бревна!"), 5000);
         dontChangeStatus = true; // Чтобы увидели это сообщение -^
         OK = firstLength && secondLength; // Только если указаны обе длины
-    } else if (!firstLength || !secondLength) {
+    } else if (firstLength < 0.5 || secondLength < 0.5) {
         ui->statusBar->showMessage(tr("Введите длины брусков!"));
         OK = false;
     } else OK = true;
     // Бревно
-    if (!logLength) {
+    if (logLength < 0.5) {
         ui->statusBar->showMessage(tr("Введите длину бревна!"));
         OK = false;
     }
@@ -72,26 +72,26 @@ void MainWindow::checkGivenValues() {
 
 void MainWindow::fillDefaultValues() {
     ui->logsCount->setValue(20);
-    ui->logLength->setValue(5);
-    ui->firstLogLength->setValue(2);
-    ui->secondLogLength->setValue(3);
+    ui->logLength->setValue(5.0);
+    ui->firstLogLength->setValue(2.0);
+    ui->secondLogLength->setValue(3.0);
 }
 
 void MainWindow::solve() {
     prepareSolutionBrowser();
     int logsCount    = ui->logsCount->value();       // Количество брёвен всего
-    int logLength    = ui->logLength->value();       // Длина одного бревна
-    int firstLength  = ui->firstLogLength->value();  // Длина первого бруска
-    int secondLength = ui->secondLogLength->value(); // Длина второго бруска
+    double logLength    = ui->logLength->value();       // Длина одного бревна
+    double firstLength  = ui->firstLogLength->value();  // Длина первого бруска
+    double secondLength = ui->secondLogLength->value(); // Длина второго бруска
     int firstCount   = 1; // Кол-ва брусков в комплекте сделаны фиксированными.
     int secondCount  = 1; // Но, если хотите, можно вынести и крутилку в GUI.
     // ВНИМАНИЕ: В данной версии алгоритм некорректно работает для количества
     // брусков, отличных от единиц!!!
-    int maxLen = logsCount*logLength; // Если б было одно бревно такой длины...
+    double maxLen = logsCount*logLength; // Если б было одно бревно такой длины...
     // Длина идеального бревна на 1 комплект
-    int requiredLen = firstCount*firstLength + secondCount*secondLength;
+    double requiredLen = firstCount*firstLength + secondCount*secondLength;
     // Чисто теоретически можно сделать столько комплектов
-    double allPossible = double(maxLen)/double(requiredLen);
+    double allPossible = maxLen/requiredLen;
     // Ну или вот столько первых и вторых брусков соответственно
     double firstPossible, secondPossible;
     // ОСТОРОЖНО, КОСТЫЛЬ! Расчитываем кол-во брусков в завис. от суммы их длин
@@ -99,10 +99,10 @@ void MainWindow::solve() {
         firstPossible = allPossible*firstCount;
         secondPossible = allPossible*secondCount;
     } else {
-        firstPossible = double(logsCount*(logLength/firstLength))/
-                               double(firstCount+secondCount)*firstCount;
-        secondPossible = double(logsCount*(logLength/secondLength))/
-                               double(firstCount+secondCount)*secondCount;
+        firstPossible = logsCount*floor(logLength/firstLength)/
+                               (firstCount+secondCount)*firstCount;
+        secondPossible = logsCount*floor(logLength/secondLength)/
+                               (firstCount+secondCount)*secondCount;
     }
     // Симплекс-таблица
     QList< QList<double> > simplex;
