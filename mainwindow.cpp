@@ -89,21 +89,40 @@ void MainWindow::solve() {
     // брусков, отличных от единиц!!!
     // Длина идеального бревна на 1 комплект
     double requiredLen = firstCount*firstLength + secondCount*secondLength;
-    double firstPossible, secondPossible;
+    double firstPossible, secondPossible, allPossible;
     // ОСТОРОЖНО, КОСТЫЛЬ! Расчитываем кол-во брусков в завис. от суммы их длин
     if (requiredLen<=logLength) {
         double maxLen = logsCount*logLength; // Если б было одно бревно такой длины...
         // Чисто теоретически можно сделать столько комплектов
-        double allPossible = maxLen/(requiredLen/(requiredLen/logLength));
+        // ОСТОРОЖНО, КОСТЫЛЬ. Ну, в общем, опять...
+        if (logLength/firstLength < 2.0 || logLength/secondLength < 2.0
+            || (logLength-firstLength-secondLength)<firstLength
+            || (logLength-firstLength-secondLength)<secondLength)
+            allPossible = logsCount;
+        else
+            allPossible = maxLen/requiredLen;
         // Ну или вот столько первых и вторых брусков соответственно
         firstPossible = allPossible*firstCount;
         secondPossible = allPossible*secondCount;
     } else {
-        firstPossible = logsCount*floor(logLength/firstLength)/
-                               (firstCount+secondCount)*firstCount;
-        secondPossible = logsCount*floor(logLength/secondLength)/
-                               (firstCount+secondCount)*secondCount;
-        firstPossible = secondPossible = qMin(firstPossible, secondPossible);
+        firstPossible = logsCount*floor(logLength/firstLength);
+        secondPossible = logsCount*floor(logLength/secondLength);
+        double t = 0, u = 0;
+        // Просто аццкая подгонка значений
+        int i = 1;
+        int j = logsCount;
+        while (i!=j) {
+            if (t<=u) {
+                t += firstPossible/logsCount;
+                i++;
+            }
+            if (u<=t) {
+                u += secondPossible/logsCount;
+                j--;
+            }
+        }
+        if (t<=u) t += firstPossible/logsCount; else u += secondPossible/logsCount;
+        firstPossible = secondPossible = qMin(t, u);
     }
     // Симплекс-таблица
     QList< QList<double> > simplex;
