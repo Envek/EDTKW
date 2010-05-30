@@ -20,7 +20,7 @@
    <string>Курсовая работа по ТПР. Новиков Андрей, 753.</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="icons.qrc">
     <normaloff>:/icons/buding.ico</normaloff>:/icons/buding.ico</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -45,7 +45,10 @@
     <item row="0" column="2">
      <widget class="QLabel" name="logLengthLabel">
       <property name="text">
-       <string>&amp;длиной</string>
+       <string>д&amp;линой</string>
+      </property>
+      <property name="buddy">
+       <cstring>logLength</cstring>
       </property>
      </widget>
     </item>
@@ -54,12 +57,18 @@
       <property name="text">
        <string>П&amp;ервый брусок</string>
       </property>
+      <property name="buddy">
+       <cstring>firstLogLength</cstring>
+      </property>
      </widget>
     </item>
     <item row="1" column="2">
      <widget class="QLabel" name="secondLogLengthLabel">
       <property name="text">
        <string>и &amp;второй</string>
+      </property>
+      <property name="buddy">
+       <cstring>secondLogLength</cstring>
       </property>
      </widget>
     </item>
@@ -100,7 +109,7 @@
        </size>
       </property>
       <property name="text">
-       <string>&amp;Показывать ход решения</string>
+       <string>Показывать &amp;ход решения</string>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -202,7 +211,7 @@
      <x>0</x>
      <y>0</y>
      <width>450</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTask">
@@ -228,7 +237,7 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionHelp">
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/question-white.png</normaloff>:/icons/question-white.png</iconset>
    </property>
    <property name="text">
@@ -243,7 +252,7 @@
   </action>
   <action name="actionTask">
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/script-text.png</normaloff>:/icons/script-text.png</iconset>
    </property>
    <property name="text">
@@ -258,7 +267,7 @@
   </action>
   <action name="actionAbout">
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/information-white.png</normaloff>:/icons/information-white.png</iconset>
    </property>
    <property name="text">
@@ -279,7 +288,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/lightning.png</normaloff>:/icons/lightning.png</iconset>
    </property>
    <property name="text">
@@ -294,7 +303,7 @@
   </action>
   <action name="actionDefaultValues">
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/table-import.png</normaloff>:/icons/table-import.png</iconset>
    </property>
    <property name="text">
@@ -309,7 +318,7 @@
   </action>
   <action name="actionQuit">
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/cross.png</normaloff>:/icons/cross.png</iconset>
    </property>
    <property name="text">
@@ -327,7 +336,9 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>logsCount</sender>
