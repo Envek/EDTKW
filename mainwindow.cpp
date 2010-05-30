@@ -87,15 +87,15 @@ void MainWindow::solve() {
     int secondCount  = 1; // Но, если хотите, можно вынести и крутилку в GUI.
     // ВНИМАНИЕ: В данной версии алгоритм некорректно работает для количества
     // брусков, отличных от единиц!!!
-    double maxLen = logsCount*logLength; // Если б было одно бревно такой длины...
     // Длина идеального бревна на 1 комплект
     double requiredLen = firstCount*firstLength + secondCount*secondLength;
-    // Чисто теоретически можно сделать столько комплектов
-    double allPossible = maxLen/requiredLen;
-    // Ну или вот столько первых и вторых брусков соответственно
     double firstPossible, secondPossible;
     // ОСТОРОЖНО, КОСТЫЛЬ! Расчитываем кол-во брусков в завис. от суммы их длин
     if (requiredLen<=logLength) {
+        double maxLen = logsCount*logLength; // Если б было одно бревно такой длины...
+        // Чисто теоретически можно сделать столько комплектов
+        double allPossible = maxLen/(requiredLen/(requiredLen/logLength));
+        // Ну или вот столько первых и вторых брусков соответственно
         firstPossible = allPossible*firstCount;
         secondPossible = allPossible*secondCount;
     } else {
@@ -103,6 +103,7 @@ void MainWindow::solve() {
                                (firstCount+secondCount)*firstCount;
         secondPossible = logsCount*floor(logLength/secondLength)/
                                (firstCount+secondCount)*secondCount;
+        firstPossible = secondPossible = qMin(firstPossible, secondPossible);
     }
     // Симплекс-таблица
     QList< QList<double> > simplex;
